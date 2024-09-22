@@ -3,19 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>        
-    </script>
-    <title>Document</title>
+    <title>Select Folder and Display Images</title>
 </head>
 <body>
-<div>
-    <h1>Image Gallery</h1>
-    <div>
-        <img src="./image/images (6).jpg" alt="Image">         <img src="./image/images (1).png" alt="Image"> 
-    </div>
-</div>    
-<script>
-    console.log();
-</script>
+    <h2>Select a Folder to Display Images:</h2>
+    <input type="file" id="folderInput" webkitdirectory multiple>
+    <div id="imageDisplay"></div>
+
+    <script>
+        // Get the folder input and image display container
+        const folderInput = document.getElementById('folderInput');
+        const imageDisplay = document.getElementById('imageDisplay');
+
+        // Add event listener to handle folder selection
+        folderInput.addEventListener('change', function() {
+            // Clear previous images
+            imageDisplay.innerHTML = '';
+
+            // Loop through the selected files in the folder
+            for (let i = 0; i < this.files.length; i++) {
+                let file = this.files[i];
+
+                // Only process image files
+                if (file.type.startsWith('image/')) {
+                    // Create a FileReader to read the image file
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Create an img tag and set its src attribute to the image data
+                        let img = document.createElement('img');
+                        img.src = e.target.result; // The image data URL
+                        img.style.width = '200px';  // Set image width (adjust as needed)
+                        img.style.margin = '10px';  // Add margin between images
+                        imageDisplay.appendChild(img); // Append the img tag to the display area
+                    };
+
+                    // Read the image file as a data URL
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
